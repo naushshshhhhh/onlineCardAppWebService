@@ -3,15 +3,25 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": "",
   "dependencies": {
     "dotenv": "^17.2.3",
     "express": "^5.2.1",
     "mysql2": "^3.16.0"
-  }
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/naushshshhhhh/onlineCardAppWebService.git"
+  },
+  "bugs": {
+    "url": "https://github.com/naushshshhhhh/onlineCardAppWebService/issues"
+  },
+  "homepage": "https://github.com/naushshshhhhh/onlineCardAppWebService#readme",
+  "description": ""
 }
