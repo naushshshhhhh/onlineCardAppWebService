@@ -17,9 +17,6 @@ const dbConfig= {
 
 const app = express();
 app.use(express.json());
-app.get('/', (req, res) => {
-    res.send('Server is running! Try /allcards to see the data.');
-});
 
 app.get('/allcards', async (req,res) => {
     try {
@@ -48,4 +45,7 @@ app.post('/addcard', async (req, res) => {
     }
 });
 
-app.listen(port, () => console.log(`Server started on port ${port}`));
+// start the server
+app.listen(port, () => {
+    console.log(`Server started on port`, port);
+});
