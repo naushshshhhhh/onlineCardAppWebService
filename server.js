@@ -76,38 +76,30 @@ app.post('/addcard', async (req, res) => {
     }
 });
 
-// PUT: Update an existing card
+// Example Route: Update a card
 app.put('/updatecard/:id', async (req, res) => {
     const { id } = req.params;
     const { card_name, card_pic } = req.body;
-    try {
+    try{
         let connection = await mysql.createConnection(dbConfig);
-        await connection.execute(
-            'UPDATE defaultdb.cards SET card_name = ?, card_pic = ? WHERE id = ?',
-            [card_name, card_pic, id]
-        );
-        await connection.end();
-        res.json({ message: 'Card updated successfully' });
+        await connection.execute('UPDATE cards SET card_name=?, card_pic=? WHERE id=?', [card_name, card_pic, id]);
+        res.status(201).json({ message: 'Card ' + id + ' updated successfully!' });
     } catch (err) {
         console.error(err);
-        res.status(500).json({ message: 'Server error - could not update card' });
+        res.status(500).json({ message: 'Server error - could not update card ' + id });
     }
 });
 
-// DELETE: Delete a card
+// Example Route: Delete a card
 app.delete('/deletecard/:id', async (req, res) => {
     const { id } = req.params;
-    try {
+    try{
         let connection = await mysql.createConnection(dbConfig);
-        await connection.execute(
-            'DELETE FROM defaultdb.cards WHERE id = ?',
-            [id]
-        );
-        await connection.end();
-        res.json({ message: 'Card deleted successfully' });
+        await connection.execute('DELETE FROM cards WHERE id=?', [id]);
+        res.status(201).json({ message: 'Card ' + id + ' deleted successfully!' });
     } catch (err) {
         console.error(err);
-        res.status(500).json({ message: 'Server error - could not delete card' });
+        res.status(500).json({ message: 'Server error - could not delete card ' + id });
     }
 });
 
