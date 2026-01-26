@@ -18,8 +18,12 @@ const dbConfig = {
 };
 
 const app = express();
+app.use(express.json());
 
-// --- 1. CORS CONFIGURATION (The code you asked to implement) ---
+// Now you can use your variables
+const apiUrl = process.env.REACT_APP_API_URL;
+console.log("My API URL is:", apiUrl);
+
 const allowedOrigins = [
     "http://localhost:3000",
     // "https://YOUR-frontend.vercel.app", // add later
@@ -44,7 +48,26 @@ app.use(
 
 app.use(express.json());
 
-// --- 2. ROUTES ---
+const DEMO_USER = { id: 1, username: "admin", password: "admin123" };
+
+const jwt = require("jsonwebtoken");
+const JWT_SECRET = process.env.JWT_SECRET;
+
+app.post("/login", (req, res) => {
+    const { username, password } = req.body;
+
+    if (username !== DEMO_USER.username || password !== DEMO_USER.password) {
+        return res.status(401).json({ error: "Invalid credentials" });
+    }
+
+    // create a token using JWT secret
+    const token = jwt.sign(
+        { userId: DEMO_USER.id, username: DEMO_USER.username },
+        JWT_SECRET,
+        { expiresIn: "1h" }
+    );
+    res.json({ token });
+});
 
 // GET: Fetch all cards
 app.get('/allcards', async (req,res) => {
