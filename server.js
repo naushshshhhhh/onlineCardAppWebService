@@ -2,7 +2,8 @@ const express = require('express');
 const mysql = require('mysql2/promise');
 const cors = require('cors');
 require('dotenv').config();
-const port = 3000;
+
+const port = process.env.PORT || 3000;
 
 // Database Configuration
 const dbConfig = {
@@ -26,13 +27,12 @@ console.log("My API URL is:", apiUrl);
 
 const allowedOrigins = [
     "http://localhost:3000",
-    "https://card-app-starter-shemhsuanhariz.onrender.com/"
+    "https://card-app-starter-shemhsuanhariz.onrender.com"
 ];
 
 app.use(
     cors({
         origin: function (origin, callback) {
-            // allow requests with no origin (Postman/server-to-server)
             if (!origin) return callback(null, true);
             if (allowedOrigins.includes(origin)) {
                 return callback(null, true);
