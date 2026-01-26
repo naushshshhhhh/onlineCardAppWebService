@@ -79,10 +79,10 @@ app.post("/login", (req, res) => {
     const { username, password } = req.body;
 
     if (username !== DEMO_USER.username || password !== DEMO_USER.password) {
-        return res.status(401).json({ error: "Invalid credentials" });
+        // Change "error" to "message"
+        return res.status(401).json({ message: "Invalid credentials" }); 
     }
 
-    // create a token using JWT secret
     const token = jwt.sign(
         { userId: DEMO_USER.id, username: DEMO_USER.username },
         JWT_SECRET,
