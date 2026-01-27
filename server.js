@@ -20,6 +20,21 @@ const dbConfig = {
 const app = express();
 app.use(express.json());
 
+app.use(
+    cors({
+        origin: function (origin, callback) {
+            if (!origin) return callback(null, true);
+            if (allowedOrigins.includes(origin)) {
+                return callback(null, true);
+            }
+            return callback(new Error("Not allowed by CORS"));
+        },
+        methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+        allowedHeaders: ["Content-Type", "Authorization"],
+        credentials: false,
+    })
+);
+
 const apiUrl = process.env.REACT_APP_API_URL;
 console.log("My API URL is:", apiUrl);
 
@@ -41,27 +56,10 @@ function requireAuth(req, res, next) {
     }
 }
 
-app.post("/addcard", requireAuth, async (req, res) => { });
-
 const allowedOrigins = [
     "http://localhost:3000",
     "https://card-app-starter-shemhsuanhariz.onrender.com"
 ];
-
-app.use(
-    cors({
-        origin: function (origin, callback) {
-            if (!origin) return callback(null, true);
-            if (allowedOrigins.includes(origin)) {
-                return callback(null, true);
-            }
-            return callback(new Error("Not allowed by CORS"));
-        },
-        methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-        allowedHeaders: ["Content-Type", "Authorization"],
-        credentials: false,
-    })
-);
 
 app.use(express.json());
 
@@ -99,7 +97,7 @@ app.get('/allcards', async (req,res) => {
 });
 
 // Add new card
-app.post('/addcard', async (req, res) => {
+app.post('/addcard', requireAuth, async (req, res) => {
     const { card_name, card_pic } = req.body;
     try {
         let connection = await mysql.createConnection(dbConfig);
