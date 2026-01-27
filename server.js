@@ -5,7 +5,6 @@ require('dotenv').config();
 
 const port = process.env.PORT || 3000;
 
-// Database Configuration
 const dbConfig = {
     host: process.env.DB_HOST,
     user: process.env.DB_USER,
@@ -21,7 +20,6 @@ const dbConfig = {
 const app = express();
 app.use(express.json());
 
-// Now you can use your variables
 const apiUrl = process.env.REACT_APP_API_URL;
 console.log("My API URL is:", apiUrl);
 
@@ -43,10 +41,7 @@ function requireAuth(req, res, next) {
     }
 }
 
-// Protect only ONE route for this demo
-app.post("/addcard", requireAuth, async (req, res) => {
-// existing addcard logic (same as before)
-});
+app.post("/addcard", requireAuth, async (req, res) => { });
 
 const allowedOrigins = [
     "http://localhost:3000",
@@ -79,7 +74,6 @@ app.post("/login", (req, res) => {
     const { username, password } = req.body;
 
     if (username !== DEMO_USER.username || password !== DEMO_USER.password) {
-        // Change "error" to "message"
         return res.status(401).json({ message: "Invalid credentials" }); 
     }
 
@@ -91,7 +85,7 @@ app.post("/login", (req, res) => {
     res.json({ token });
 });
 
-// GET: Fetch all cards
+// Fetch all cards
 app.get('/allcards', async (req,res) => {
     try {
         let connection = await mysql.createConnection(dbConfig);
@@ -104,7 +98,7 @@ app.get('/allcards', async (req,res) => {
     }
 });
 
-// POST: Add a new card
+// Add new card
 app.post('/addcard', async (req, res) => {
     const { card_name, card_pic } = req.body;
     try {
@@ -121,7 +115,7 @@ app.post('/addcard', async (req, res) => {
     }
 });
 
-// Example Route: Update a card
+// Update card
 app.put('/updatecard/:id', async (req, res) => {
     const { id } = req.params;
     const { card_name, card_pic } = req.body;
@@ -135,7 +129,7 @@ app.put('/updatecard/:id', async (req, res) => {
     }
 });
 
-// Example Route: Delete a card
+// Delete card
 app.delete('/deletecard/:id', async (req, res) => {
     const { id } = req.params;
     try{
@@ -148,7 +142,6 @@ app.delete('/deletecard/:id', async (req, res) => {
     }
 });
 
-// --- 3. START SERVER ---
 app.listen(port, () => {
     console.log(`Server started on port`, port);
 });
